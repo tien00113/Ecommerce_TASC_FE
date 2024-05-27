@@ -3,6 +3,8 @@ import { MainCarouselComponent } from './main-carousel/main-carousel.component';
 import { CategoryComponent } from './category/category.component';
 import { ProductComponent } from '../product/product.component';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { ProductService } from '../services/product.service';
 
 @Component({
   selector: 'app-home',
@@ -13,19 +15,22 @@ import { CommonModule } from '@angular/common';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  products: any[] = [];
 
-  products: any[] = []; // Giả sử đây là mảng chứa các sản phẩm
-  productRows: any[][] = [];
+  constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
-    // Giả sử products được khởi tạo với một số giá trị
-    this.products = Array.from({ length: 12 }, (_, i) => ({ id: i, name: `Product ${i + 1}` }));
+    const params = {
+      page: 0,
+      color: ''
+    };
+    this.getAllProduct(params);
+  }
 
-    // Chia products thành các hàng, mỗi hàng chứa tối đa 4 sản phẩm
-    for (let i = 0; i < this.products.length; i += 4) {
-      this.productRows.push(this.products.slice(i, i + 4));
-    }
+  getAllProduct(params: { page: number, color: string }) {
+    this.productService.getAllProduct(params).subscribe(res => {
+      this.products = res.content;
+    });
   }
 
 }

@@ -1,12 +1,11 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { RouterModule, RouterOutlet, Routes } from '@angular/router';
-import { routes } from './app.routes';
-import { HomeComponent } from './home/home.component';
-import { initFlowbite } from 'flowbite';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { FooterComponent } from './footer/footer.component';
+import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProductComponent } from './product/product.component';
-import { FooterComponent } from './footer/footer.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +25,7 @@ export class AppComponent implements OnInit{
           const { initAccordions, initFlowbite } = module;
           initAccordions();
           initFlowbite();
-        });
+        })
       }
   }
 }
