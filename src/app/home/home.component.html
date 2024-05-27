@@ -2,4 +2,94 @@
   <div>
     <app-main-carousel></app-main-carousel>
   </div>
+  <div>
+    <app-category></app-category>
+  </div>
+
+  <div class="w-full h-14 bg-gray-200 text-center flex items-center justify-center mt-10">
+    <h1 class="text-center uppercase font-bold text-xl">Sản Phẩm Mới Nhất</h1>
+  </div>
+  <div class="flex flex-wrap justify-around px-10">
+    <div *ngFor="let product of products" class="w-1/4 p-3">
+      <app-product [product]="product"></app-product>
+    </div>
+    <nav class="mt-3" aria-label="Page navigation example">
+      <ul class="flex items-center h-8 text-sm space-x-3">
+        <li>
+          <a href="#"
+            class="flex items-center justify-center px-3 h-[50%] ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <span class="sr-only">Previous</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a href="#"
+            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+        </li>
+        <li>
+          <a href="#"
+            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+        </li>
+        <li>
+          <a href="#" aria-current="page"
+            class="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+        </li>
+        <li>
+          <a href="#"
+            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+        </li>
+        <li>
+          <a href="#"
+            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+        </li>
+        <li>
+          <a href="#"
+            class="flex items-center justify-center px-3 h-[50%] leading-tight text-gray-500 bg-white border  border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <span class="sr-only">Next</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+            </svg>            
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div>
+    <div class="flex items-center justify-center py-3">
+      <div class="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-8 gap-4">
+        <div class="bg-gray-200 p-4 rounded-md shadow-md flex items-center justify-center">
+          <img src="https://s3.us-east-1.amazonaws.com/cdn.designcrowd.com/blog/gucci-logo-history/Gucci-Logo.png"
+            alt="Brand 1" class="h-12">
+        </div>
+        <div class="bg-gray-200 p-4 rounded-md shadow-md flex items-center justify-center">
+          <img src="https://static.brandirectory.com/logos/vere002_versace_brandlogo.png" alt="Brand 2" class="h-12">
+        </div>
+        <div class="bg-gray-200 p-4 rounded-md shadow-md flex items-center justify-center">
+          <img src="https://news.adidas.com/Content/images/adidas_logo_metatag.png" alt="Brand 3" class="h-12">
+        </div>
+        <div class="bg-gray-200 p-4 rounded-md shadow-md flex items-center justify-center">
+          <img src="https://s3.us-east-1.amazonaws.com/cdn.designcrowd.com/blog/gucci-logo-history/Gucci-Logo.png"
+            alt="Brand 1" class="h-12">
+        </div>
+        <div class="bg-gray-200 p-4 rounded-md shadow-md flex items-center justify-center">
+          <img src="https://static.brandirectory.com/logos/vere002_versace_brandlogo.png" alt="Brand 2" class="h-12">
+        </div>
+        <div class="bg-gray-200 p-4 rounded-md shadow-md flex items-center justify-center">
+          <img src="https://news.adidas.com/Content/images/adidas_logo_metatag.png" alt="Brand 3" class="h-12">
+        </div>
+        <div class="bg-gray-200 p-4 rounded-md shadow-md flex items-center justify-center">
+          <img src="https://static.brandirectory.com/logos/vere002_versace_brandlogo.png" alt="Brand 2" class="h-12">
+        </div>
+        <div class="bg-gray-200 p-4 rounded-md shadow-md flex items-center justify-center">
+          <img src="https://s3.us-east-1.amazonaws.com/cdn.designcrowd.com/blog/gucci-logo-history/Gucci-Logo.png"
+            alt="Brand 1" class="h-12">
+        </div>
+        <!-- Thêm các div cho các thương hiệu khác tương tự -->
+      </div>
+    </div>
+
+  </div>
 </div>
