@@ -1,9 +1,9 @@
-<div class="flex px-5 w-full">
+<div *ngIf="product" class="flex px-5 w-full">
   <div class="grid gap-4 w-[50%]">
     <div>
       <img class="h-auto max-w-full rounded-lg " [src]="selectedImage" alt="">
     </div>
-    <div class="grid grid-cols-5 gap-4">
+    <div class="grid grid-cols-4 gap-4">
       <div class="cursor-pointer" *ngFor="let image of images; let i = index" (click)="selectImage(image.url)">
         <img class="h-auto max-w-full rounded-lg" [src]="image.url" alt="" [class.border-blue-500]="image.selected"
           [class.border-2]="image.selected">
@@ -12,7 +12,7 @@
   </div>
   <div class="pl-5 w-[50%]">
     <div class="mt-5">
-      <h1 class="text-3xl font-bold">Áo Thun Nam</h1>
+      <h1 class="text-3xl font-bold">{{product.name}}</h1>
       <div>
         <div class="flex items-center">
           <svg class="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -44,16 +44,16 @@
         </div>
 
         <div class="pt-3 text-lg font-bold">
-          299,000 vnđ
+          {{product.price| currencyFormat}}
         </div>
 
         <div class="color-selector flex space-x-4 mt-8">
-          <button *ngFor="let color of colors" class="color-button border px-2 rounded-md"
+          <button *ngFor="let color of product.colorList" class="color-button border px-2 rounded-md"
             (click)="selectColor(color)">{{ color }}</button>
         </div>
 
         <div class="color-selector flex space-x-4 mt-4">
-          <button *ngFor="let size of sizes" class="color-button border px-3 rounded-md" (click)="selectSize(size)">{{
+          <button *ngFor="let size of product.sizeList" class="color-button border px-3 rounded-md" (click)="selectSize(size)">{{
             size }}</button>
         </div>
 
@@ -80,9 +80,7 @@
     <div class="mt-10 font-semibold">
       Mô Tả Sản Phẩm:
       <div class="text-sm font-normal pt-3">
-        Áo Polo nam là sản phẩm chất lượng cao, được làm từ vải cotton mềm mại và thoáng mát. Thiết kế đơn giản nhưng
-        không kém phần sang trọng,
-        phù hợp với mọi hoàn cảnh từ công sở đến các dịp thể thao hoặc đi chơi cùng bạn bè.
+        {{product.description}}
       </div>
     </div>
     <div class="mt-5 flex flex-row">
