@@ -1,10 +1,11 @@
 import { createReducer, on } from "@ngrx/store"
-import { getAllProduct, getAllProductFailure, getAllProductSuccess, getProductDetail, getProductDetailFailure, getProductDetailSuccess } from "./product.action"
+import { getAllProduct, getAllProductFailure, getAllProductSuccess, getProductDetail, getProductDetailFailure, getProductDetailSuccess, getProductVariant, getProductVariantFailure, getProductVariantSuccess } from "./product.action"
 
 const initialState = {
     pageable: null,
     product: null,
     products: [],
+    variants: {},
     loading: false,
     error: null,
 }
@@ -47,4 +48,23 @@ export const productReducer = createReducer(
         loading: false,
         error: error
     })),
+
+    //variant
+    on(getProductVariant, (state) => ({
+        ...state,
+        loading: true
+    })),
+    on(getProductVariantSuccess, (state, {variant}) => ({
+        ...state,
+        loading: false,
+        variants: {
+            ...state.variants,
+            [variant.id]: variant
+          }
+    })),
+    on(getProductVariantFailure, (state, {error}) => ({
+        ...state,
+        loading: false,
+        error: error
+    }))
 )

@@ -1,24 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { MainCarouselComponent } from './main-carousel/main-carousel.component';
-import { CategoryComponent } from './category/category.component';
-import { ProductComponent } from '../product/product.component';
 import { CommonModule } from '@angular/common';
-import { ProductService } from '../ngrx/product/product.service';
-import { ProductFilterRequest } from '../models/ProductFilterRequest';
-import { AppState } from '../models/AppState';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { getAllProduct, getAllProductFailure } from '../ngrx/product/product.action';
-import { firstValueFrom } from 'rxjs';
+import { AppState } from '../models/AppState';
+import { ProductFilterRequest } from '../models/ProductFilterRequest';
+import { getAllProduct } from '../ngrx/product/product.action';
+import { ProductComponent } from '../product/product.component';
+import { CategoryComponent } from './category/category.component';
+import { MainCarouselComponent } from './main-carousel/main-carousel.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   standalone: true,
-  imports: [CommonModule, MainCarouselComponent, CategoryComponent, ProductComponent]
+  imports: [
+    CommonModule,
+    MainCarouselComponent,
+    CategoryComponent,
+    ProductComponent,
+  ],
 })
 export class HomeComponent implements OnInit {
-
   products: any[] = [];
 
   totalPages!: number;
@@ -28,68 +31,90 @@ export class HomeComponent implements OnInit {
   currentPage: number = 0;
 
   filter: ProductFilterRequest = {
-    minPrice: 0,
-    maxPrice: 0,
-    categoryId: null,
-    color: null,
     pageableDTO: {
-      page: this.pageNo,
+      page: 0,
       size: 16,
-      sort: [
-        // {
-        //   property: 'price',
-        //   direction: 'ASC'
-        // }
-      ]
-    }
-  }
+      sortProperty: 'id',
+      sortDirection: 'ASC',
+    },
+  };
 
-  constructor(private productService: ProductService, private store: Store<AppState>) {
-
-    this.store.select(state => state.product.pageable).subscribe(
-      pageable => {
+  constructor(
+    private store: Store<AppState>,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.store
+      .select((state) => state.product.pageable)
+      .subscribe((pageable) => {
         this.products = pageable?.content;
-        this.totalPages = pageable?.totalPages
-        this.currentPage = pageable?.number
-      }
-    )
+        this.totalPages = pageable?.totalPages;
+        this.currentPage = pageable?.number;
+      });
   }
 
   ngOnInit() {
-    this.store.dispatch(getAllProduct());
-
-    this.getAllProduct(this.filter);
-
-  }
-
-  async getAllProduct(filter: ProductFilterRequest) {
-    try {
-      const action$ = this.productService.getAllProduct(filter);
-      const action = await firstValueFrom(action$);
-      this.store.dispatch(action);
-
-    } catch (error) {
-      console.log("error get all product pageable!", error);
-      this.store.dispatch(getAllProductFailure({ error }));
-    }
+    this.route.queryParams.subscribe((params) => {
+      this.filter = {
+        minPrice: params['minPrice'] ? +params['minPrice'] : undefined,
+        maxPrice: params['maxPrice'] ? +params['maxPrice'] : undefined,
+        categoryId: params['categoryId'] ? +params['categoryId'] : undefined,
+        color: params['color'],
+        pageableDTO: {
+          page: params['page'] ? +params['page'] - 1 : 0,
+          size: params['size'] ? +params['size'] : 16,
+          sortProperty: params['sortProperty'] || 'id',
+          sortDirection: params['sortDirection'] || 'ASC',
+        },
+      };
+      this.store.dispatch(getAllProduct({ filter: this.filter }));
+    });
   }
 
   getRange(totalPages: number): number[] {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
 
-  async getPageNumber(pageNo: number) {
-    this.filter.pageableDTO.page = pageNo - 1;
-    try {
-      const action$ = this.productService.getAllProduct(this.filter);
-      const action = await firstValueFrom(action$);
-      this.store.dispatch(action);
+  onPageChange(page: number): void {
+    const updatedPageableDTO = { ...this.filter.pageableDTO, page: page - 1 };
+    this.filter = { ...this.filter, pageableDTO: updatedPageableDTO };
+    this.updateUrlWithQueryParams();
+  }
+  
 
-    } catch (error) {
-      console.log("error get page number pageable!", error);
-      this.store.dispatch(getAllProductFailure({ error }));
+  onNextPage(): void {
+    if (this.currentPage + 1 < this.totalPages) {
+      const updatedPageableDTO = {
+        ...this.filter.pageableDTO,
+        page: this.currentPage + 1,
+      };
+      this.filter = { ...this.filter, pageableDTO: updatedPageableDTO };
+
+      this.updateUrlWithQueryParams();
     }
-  };
+  }
 
+  onPreviousPage(): void {
+    if (this.currentPage > 0) {
+      const updatedPageableDTO = { ...this.filter.pageableDTO, page: this.currentPage - 1 };
+      this.filter = { ...this.filter, pageableDTO: updatedPageableDTO };
+  
+      this.updateUrlWithQueryParams();
+    }
+  }
+  
 
+  updateUrlWithQueryParams(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        ...this.filter,
+        page: this.filter.pageableDTO.page + 1, // Convert to one-based index for user display
+        size: this.filter.pageableDTO.size,
+        sortProperty: this.filter.pageableDTO.sortProperty,
+        sortDirection: this.filter.pageableDTO.sortDirection,
+      },
+      queryParamsHandling: 'merge', // Merge with existing query params
+    });
+  }
 }

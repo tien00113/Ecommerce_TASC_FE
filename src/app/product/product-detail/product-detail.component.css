@@ -1,0 +1,11 @@
+.color-button.selected,
+.size-button.selected {
+  border-color: blue;
+  border-width: 2px;
+}
+.size-button.disabled, .color-button.disabled {
+    color: gray;
+    opacity: 0.5;
+    pointer-events: none;
+    
+}

@@ -17,6 +17,6 @@ export class CurrencyFormatPipe implements PipeTransform {
     });
 
     return formatter.format(value);
-  }
+  } 
 
 }

@@ -1,55 +1,79 @@
-import { HttpClient } from "@angular/common/http";
-import { BASE_URL } from "../../config/api";
-import { Store } from "@ngrx/store";
-import { AppState } from "../../models/AppState";
-import { ProductFilterRequest } from "../../models/ProductFilterRequest";
-import { getAllProductFailure, getAllProductSuccess, getProductDetailFailure, getProductDetailSuccess } from "./product.action";
-import { Observable, catchError, map, of } from "rxjs";
-import { Injectable } from "@angular/core";
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { BASE_URL } from '../../config/api';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../models/AppState';
+import { ProductFilterRequest } from '../../models/ProductFilterRequest';
+import {
+  getAllProductFailure,
+  getAllProductSuccess,
+  getProductDetailFailure,
+  getProductDetailSuccess,
+} from './product.action';
+import { Observable, catchError, map, of } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
-export class ProductService{
-    private apiUrl = BASE_URL;
+export class ProductService {
+  constructor(private http: HttpClient) {}
 
+  getAllProduct(filter: ProductFilterRequest): Observable<any> {
+    let params = new HttpParams();
 
-    constructor(private http: HttpClient, private store: Store<AppState>) { }
-
-    getAllProduct(filter: ProductFilterRequest) : Observable<any> {
-        return this.http.post<any>(`${this.apiUrl}/allproduct`, filter).pipe(
-            map((pageable: any) => {
-                console.log("pageable all product: ", pageable);
-                return getAllProductSuccess({ pageable});
-            }),
-            catchError((error) => {
-
-                console.log("lỗi: ", error);
-                return of(
-                    getAllProductFailure(
-                        error.response && error.response.data.message ? error.response.data.message : error.message
-                    )
-                )
-
-            })
-        )
+    if (filter.minPrice !== undefined) {
+      params = params.append('minPrice', filter.minPrice.toString());
     }
-
-    getProductDetail(productId: number) : Observable<any> {
-        return this.http.get(`${this.apiUrl}/product/${productId}`).pipe(
-            map((productDetail: any) => {
-                console.log("product detail: ", productDetail);
-                return getProductDetailSuccess({ productDetail: productDetail })
-            }),
-            catchError((error) => {
-                console.log("error get product detail: ");
-
-                return of(
-                    getProductDetailFailure(
-                        error.response && error.response.data.message ? error.response.data.message : error.message
-                    )
-                )
-            })
-        )
+    if (filter.maxPrice !== undefined) {
+      params = params.append('maxPrice', filter.maxPrice.toString());
     }
+    if (filter.categoryId !== undefined) {
+      params = params.append('categoryId', filter.categoryId.toString());
+    }
+    if (filter.color) {
+      params = params.append('color', filter.color);
+    }
+    if (filter.pageableDTO) {
+      params = params.append('page', filter.pageableDTO.page.toString());
+      params = params.append('size', filter.pageableDTO.size.toString());
+      params = params.append('sortProperty', filter.pageableDTO.sortProperty);
+      params = params.append('sortDirection', filter.pageableDTO.sortDirection);
+    }
+    return this.http.get<any>('public/product', {params})
+  }
+
+  getProductDetail(productId: number): Observable<any> {
+    return this.http.get(`public/product/${productId}`).pipe(
+      map((productDetail: any) => {
+        console.log('product detail: ', productDetail);
+        return getProductDetailSuccess({ productDetail: productDetail });
+      }),
+      catchError((error) => {
+        console.log('error get product detail: ');
+
+        return of(
+          getProductDetailFailure(
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message
+          )
+        );
+      })
+    );
+  }
+
+  getProductVariant(id: number): Observable<any> {
+    return this.http.get(`public/product/variant/${id}`).pipe(
+      map((response) => {
+        return response;
+      }),
+      catchError((error) => {
+        return of(
+          {
+            error: error.error?.message || error.message,
+          }
+        )
+      })
+    )
+  }
 }

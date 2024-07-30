@@ -48,16 +48,30 @@
         </div>
 
         <div class="color-selector flex space-x-4 mt-8">
-          <button *ngFor="let color of product.colorList" class="color-button border px-2 rounded-md"
-            (click)="selectColor(color)">{{ color }}</button>
+          <!-- <button *ngFor="let color of product.colors" class="color-button border px-2 rounded-md"
+            (click)="selectColor(color)">{{ color }}</button> -->
+          <button *ngFor="let color of product.colors" class="color-button border px-2 rounded-md"
+            [class.selected]="color === selectedColor" (click)="selectColor(color)"
+            [class.disabled]="!isColorAvailable(color)">
+            {{ color }}
+          </button>
         </div>
 
         <div class="color-selector flex space-x-4 mt-4">
-          <button *ngFor="let size of product.sizeList" class="color-button border px-3 rounded-md" (click)="selectSize(size)">{{
-            size }}</button>
+          <!-- <button *ngFor="let size of product.sizes" class="color-button border px-3 rounded-md" (click)="selectSize(size)">{{
+            size }}</button> -->
+          <button *ngFor="let size of product.sizes" class="size-button border px-2 rounded-md"
+            [class.selected]="size === selectedSize" (click)="selectSize(size)"
+            [class.disabled]="!isSizeAvailable(size)">
+            {{ size }}
+          </button>
         </div>
 
-        <div class="relative w-28 h-8 mt-5">
+        <div class="my-3 ml-2">
+          Kho: {{stock}}
+        </div>
+
+        <!-- <div class="relative w-28 h-8 mt-5">
           <div class="absolute inset-0 flex items-center justify-between bg-gray-200 rounded-md">
             <div class="px-2 border-r border-gray-300 flex items-center h-full cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -73,6 +87,29 @@
               </svg>
             </div>
           </div>
+        </div> -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <button type="button" (click)="decrementQuantity()"
+              class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
+              <svg class="h-2.5 w-2.5 text-gray-900 dark:text-white" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M1 1h16" />
+              </svg>
+            </button>
+            <div class="px-3">
+              {{quantity}}
+            </div>
+            <button type="button" (click)="incrementQuantity()"
+              class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
+              <svg class="h-2.5 w-2.5 text-gray-900 dark:text-white" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 1v16M1 9h16" />
+              </svg>
+            </button>
+          </div>
         </div>
 
       </div>
@@ -84,8 +121,8 @@
       </div>
     </div>
     <div class="mt-5 flex flex-row">
-      <button type="button"
-        class="flex items-center justify-center text-white bg-gray-800 hover:bg-transparent hover:border hover:border-black hover:text-black focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-20 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Thêm
+      <button type="button" (click)="add(selectedColor, selectedSize,quantity)"
+        class="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-20 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Thêm
         Vào Giỏ</button>
       <button type="button"
         class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-800 hover:text-white focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">

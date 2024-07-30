@@ -1,0 +1,39 @@
+<div *ngIf="check(); else paymentFail" class="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-100 pt-6 border">
+  <div id="default-modal" tabindex="-1" aria-hidden="true"
+    class="overflow-y-auto overflow-x-hidden justify-center w-[50%] items-center md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+      <div class="border relative bg-white rounded-lg shadow dark:bg-gray-700 pt-10">
+        <div
+          class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5">
+          <svg aria-hidden="true" class="w-8 h-8 text-green-500 dark:text-green-400" fill="currentColor"
+            viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+              clip-rule="evenodd"></path>
+          </svg>
+          <span class="sr-only">Success</span>
+        </div>
+        <div class="p-4 md:p-2 space-y-4">
+          <div class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
+            <div class="space-y-6">
+              <div class="bg-white p-4 dark:bg-gray-800 md:p-4">
+                <div class="pb-6">
+                  <p class="text-center font-semibold text-xl">Thanh Toán Thành Công</p>
+                  <p class="text-center">Cảm ơn bạn đã mua hàng, hãy tiếp tục trải nghiệm nhé</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-center rounded-b">
+          <button type="button" (click)="backToHome()"
+            class="text-white bg-blue-700 mb-3 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Trang chủ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #paymentFail>
+  Lỗi thanh toán
+</ng-template>
