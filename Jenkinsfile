@@ -12,7 +12,7 @@ pipeline {
             steps {
                 // This step should not normally be used in your script. Consult the inline help for details.
                 withDockerRegistry(credentialsId: 'dockerhub-h2t', url: '') {
-                    sh label: '', script 'docker --version'
+                    sh label: '', script: 'docker --version'
                 }
             }
         }
